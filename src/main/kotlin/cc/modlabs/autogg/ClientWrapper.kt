@@ -20,6 +20,12 @@ class ClientWrapper {
     }
 
     fun sendMessage(messageToSend: String?) {
-        client!!.networkHandler!!.sendChatMessage(messageToSend)
+        val server = getCurrentServer()
+        val finalMessage = if (server == ServerConfig.HYPIXEL) {
+            "/achat $messageToSend"
+        } else {
+            messageToSend
+        }
+        client!!.networkHandler!!.sendChatMessage(finalMessage)
     }
 }

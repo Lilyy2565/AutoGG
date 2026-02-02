@@ -32,7 +32,6 @@ class EventDetector {
         hypixel["Winners -"] = Event.END_GAME
         hypixel["Sumo Duel -"] = Event.END_GAME
         hypixel["Most Wool Placed -"] = Event.END_GAME
-        hypixel["This game has been recorded."] = Event.END_GAME
 
         serverMessageEvents[ServerConfig.HYPIXEL] = hypixel
 

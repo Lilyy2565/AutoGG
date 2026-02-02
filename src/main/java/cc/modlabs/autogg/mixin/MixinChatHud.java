@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ChatHud.class)
 public class MixinChatHud {
     @Unique
-    private int lastTime = 0;
+    private long lastTime = 0;
 
     @Inject(method = "addMessage(Lnet/minecraft/text/Text;Lnet/minecraft/network/message/MessageSignatureData;Lnet/minecraft/client/gui/hud/MessageIndicator;)V", at = @At("HEAD"))
     private void sendRespect(Text message, MessageSignatureData signatureData, MessageIndicator indicator, CallbackInfo ci) {
@@ -22,7 +22,7 @@ public class MixinChatHud {
 
         if (event != null) {
             if (System.currentTimeMillis() - lastTime <= 3000) return;
-            lastTime = ((int)System.currentTimeMillis());
+            lastTime = System.currentTimeMillis();
 
             Autogg.INSTANCE.client.sendMessage("gg");
         }

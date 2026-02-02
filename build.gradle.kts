@@ -24,14 +24,16 @@ base {
 val targetJavaVersion = 21
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
-    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-    // if it is present.
-    // If you remove this line, sources will not be generated.
-    withSourcesJar()
+}
+
+loom {
+    runtimeOnlyLog4j = true
 }
 
 
 repositories {
+    mavenCentral()
+    maven("https://maven.fabricmc.net/")
     maven("https://nexus.modlabs.cc/repository/maven-mirrors/")
 }
 
@@ -43,9 +45,14 @@ dependencies {
     modImplementation("net.fabricmc:fabric-language-kotlin:${project.property("fabric_kotlin_version")}")
 
     // Fabric API. This is technically optional, but you probably want it anyway.
-    modImplementation("net.fabricmc.fabric-api:fabric-api:${project.property("fabric_version")}")
+    // Exclude sources to avoid remapping issues
+    modImplementation("net.fabricmc.fabric-api:fabric-api:${project.property("fabric_version")}") {
+        exclude(group = "*", module = "*-sources")
+    }
 
-    modLocalRuntime("com.terraformersmc", "modmenu", project.property("modmenu_version") as String)
+    modLocalRuntime("com.terraformersmc", "modmenu", project.property("modmenu_version") as String) {
+        exclude(group = "*", module = "*-sources")
+    }
 }
 
 modrinth {
